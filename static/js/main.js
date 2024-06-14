@@ -2,8 +2,11 @@ var trackingInterval;
 var startTrackingBtn = document.getElementById('startTrackingBtn');
 var stopTrackingBtn = document.getElementById('stopTrackingBtn');
 var speakBtn = document.getElementById('speakBtn');
+var historicalPlacesList = document.getElementById('historical_places_list');
 var map;
 var marker;
+
+var geoNamesUsername = 'your_geonames_username'; // Replace with your GeoNames username
 
 function initMap() {
     map = L.map('map').setView([0, 0], 12); // Default center and zoom level
@@ -70,9 +73,17 @@ function stopTracking() {
 }
 
 function showPosition(position) {
-    document.getElementById("latitude").textContent = position.coords.latitude.toFixed(6);
-    document.getElementById("longitude").textContent = position.coords.longitude.toFixed(6);
-    fetchCityAndSummary();
+    var latitude = position.coords.latitude.toFixed(6);
+    var longitude = position.coords.longitude.toFixed(6);
+
+    document.getElementById("latitude").textContent = latitude;
+    document.getElementById("longitude").textContent = longitude;
+
+    map.setView([latitude, longitude], 12); // Center the map on the current location
+    marker.setLatLng([latitude, longitude]); // Move the marker to the current location
+
+    fetchCityAndSummary(latitude, longitude);
+    fetchHistoricalPlaces(latitude, longitude);
 }
 
 function showError(error) {
@@ -92,10 +103,7 @@ function showError(error) {
     }
 }
 
-function fetchCityAndSummary() {
-    var latitude = document.getElementById("latitude").textContent;
-    var longitude = document.getElementById("longitude").textContent;
-
+function fetchCityAndSummary(latitude, longitude) {
     fetch('/get_city', {
         method: 'POST',
         headers: {
@@ -118,6 +126,59 @@ function fetchCityAndSummary() {
         document.getElementById("error_message").textContent = "Error occurred during data retrieval.";
         speakBtn.style.display = 'none';
     });
+}
+
+function fetchHistoricalPlaces(latitude, longitude) {
+    var geoNamesUrl = `http://api.geonames.org/findNearbyWikipediaJSON?lat=${latitude}&lng=${longitude}&username=${geoNamesUsername}`;
+
+    fetch(geoNamesUrl)
+        .then(response => response.json())
+        .then(data => {
+            historicalPlacesList.innerHTML = ''; // Clear the list before adding new places
+
+            // Display real historical places from GeoNames
+            data.geonames.forEach(place => {
+                var placeMarker = L.marker([place.lat, place.lng], {
+                    title: place.title || "Unknown"
+                }).addTo(map);
+
+                placeMarker.bindPopup(`<b>${place.title || "Unknown"}</b><br>${place.summary || "No description available"}`);
+                
+                placeMarker.on('click', function() {
+                    alert(place.summary || "No description available");
+                });
+
+                var placeElement = document.createElement('div');
+                placeElement.classList.add('historical-place');
+                placeElement.innerHTML = `<b>${place.title || "Unknown"}</b><br>${place.summary || "No description available"}`;
+                historicalPlacesList.appendChild(placeElement);
+            });
+
+            // Add a fake historical place for testing
+            var fakePlaceLat = 34.052235;
+            var fakePlaceLng = -118.243683;
+            var fakePlaceMarker = L.marker([fakePlaceLat, fakePlaceLng], {
+                title: "Fake Historical Place"
+            }).addTo(map);
+
+            fakePlaceMarker.bindPopup(`<b>Fake Historical Place</b><br>This is a fake historical place for testing purposes.`);
+            
+            fakePlaceMarker.on('click', function() {
+                alert("This is a fake historical place for testing purposes.");
+            });
+
+            var fakePlaceElement = document.createElement('div');
+            fakePlaceElement.classList.add('historical-place');
+            fakePlaceElement.innerHTML = `<b>Fake Historical Place</b><br>This is a fake historical place for testing purposes.`;
+            historicalPlacesList.appendChild(fakePlaceElement);
+        })
+        .catch(error => {
+            console.error('Error fetching historical places:', error);
+            var errorElement = document.createElement('div');
+            errorElement.classList.add('historical-place');
+            errorElement.innerHTML = 'Error fetching historical places.';
+            historicalPlacesList.appendChild(errorElement);
+        });
 }
 
 function speakSummary() {

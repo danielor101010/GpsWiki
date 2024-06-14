@@ -1,14 +1,14 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, make_response, render_template, request, jsonify, session, redirect, url_for
 import requests
 import wikipediaapi
 import pyttsx3
 from gtts import gTTS
 import os
-import subprocess
-import platform
 from googletrans import Translator
 
+
 app = Flask(__name__)
+app.secret_key = 'your_secret_key_here'  # Set a secret key for session management
 
 # Initialize Wikipedia API and pyttsx3 Text-to-Speech engine with custom user agent
 wiki_api = wikipediaapi.Wikipedia(
@@ -19,21 +19,58 @@ engine = pyttsx3.init()
 translator = Translator()
 
 # Route to render the index.html template
-
-
 @app.route('/')
 def welcome():
     return render_template('welcome.html')
 
 # Route to render the main.html template
-
-
 @app.route('/main')
 def main():
-    return render_template('main.html')
+    username = request.cookies.get('username')
+    if username:
+        return render_template('main.html', username=username)
+    else:
+        # Handle case where username cookie is not present
+        return render_template('login.html') 
+# Route to render the signup.html template
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        try:
+            username = request.form.get('username')
+            password = request.form.get('password')
+
+            # Dummy storage of username and password in cookies (replace with secure storage)
+            response = make_response(jsonify({'message': 'Signup successful'}))
+            response.set_cookie('username', username, httponly=True, secure=True, samesite='Strict')
+            response.set_cookie('password', password, httponly=True, secure=True, samesite='Strict')
+            return response
+
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+    return render_template('signup.html')
+
+
+# Route to handle login POST requests
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        try:
+            username = request.form.get('username')
+            password = request.form.get('password')
+            # Retrieve stored username and password from cookies (for demo purposes)
+            stored_username = request.cookies.get('username')
+            stored_password = request.cookies.get('password')
+            # Dummy authentication logic (replace with actual logic)
+            if username == stored_username and password == stored_password:
+                return jsonify({'message': 'Login successful', 'username': username}), 200
+            else:
+                return jsonify({'error': 'Invalid credentials'}), 401
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+    return render_template('login.html')
+
 # Route to handle POST requests from index.html to get city and Wikipedia info
-
-
 @app.route('/get_city', methods=['POST'])
 def get_city():
     try:
@@ -57,7 +94,6 @@ def get_city():
         return jsonify({'city': city, 'wiki_summary': wiki_summary})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
 
 def get_city_from_coordinates(latitude, longitude):
     # Example function to fetch city name from coordinates using an API
