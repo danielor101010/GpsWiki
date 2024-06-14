@@ -1,0 +1,123 @@
+/* welcome.css */
+
+/* Reset styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100%;
+    overflow-x: hidden; /* Prevent horizontal scrollbar */
+}
+
+/* Container styles */
+.welcome-container {
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Background image */
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('your-background-image.jpg'); /* Replace with your image */
+    background-size: cover;
+    filter: brightness(0.7); /* Darken the background */
+}
+
+/* Content styles */
+.content {
+    position: relative;
+    z-index: 1; /* Place above background */
+    text-align: center;
+    color: #ffffff; /* White text */
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Text shadow */
+}
+
+.content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    line-height: 1.5;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Text shadow */
+}
+
+.content .highlight {
+    color: #4CAF50; /* Highlight color */
+}
+
+.content button {
+    background-color: #4CAF50; /* Green button */
+    color: #ffffff; /* White text */
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
+}
+
+.content button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.content {
+    animation: fadeIn 1s ease; /* Fade-in animation */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .content h1 {
+        font-size: 2.5rem;
+    }
+
+    .content p {
+        font-size: 1rem;
+   
+        .content button {
+            font-size: 0.9rem;
+            padding: 10px 20px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .content h1 {
+            font-size: 2rem;
+        }
+    
+        .content p {
+            font-size: 0.9rem;
+        }
+    
+        .content button {
+            font-size: 0.8rem;
+            padding: 8px 16px;
+        }
+    }
+}    

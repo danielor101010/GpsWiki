@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to WikiGps</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/welcome.css') }}">
+</head>
+<body>
+    <div class="welcome-container">
+        <div class="background-image"></div>
+        <div class="content">
+            <h1>Welcome to <span class="highlight">WikiGps</span></h1>
+            <p>Discover Nearby Cities and Their Wikipedia Info</p>
+            <button class="btn btn-primary mr-2" onclick="startApp()">Get Started</button>
+            <!-- <a href="/signup" class="btn btn-outline-primary">Sign Up</a>
+            <a href="/login" class="btn btn-outline-primary ml-2">Login</a> -->
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (optional, if needed) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/welcome.js') }}"></script>
+</body>
+</html>
