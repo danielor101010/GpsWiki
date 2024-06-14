@@ -6,21 +6,37 @@
     <title>WikiGps</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
 </head>
 <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        {% if request.cookies.get('username') %}
+        <span class="navbar-text">
+            Welcome, {{ request.cookies.get('username') }}
+        </span>
+        {% else %}
+        <span class="navbar-text">
+            <a href="/login">Login</a>
+        </span>
+        {% endif %}
+        <div class="navbar-brand">
+            <h1>WikiGps</h1>
+        </div>
+    </nav>
+
     <!-- Main Content -->
     <div class="main-content">
         <div class="details-container">
             <div class="details">
                 <div class="container">
-                    <h1>WikiGps</h1>
+                <div class="details-title">
                     <p>Click the button below to start tracking your location:</p>
                     <div class="button-container">
-                        <button id="startTrackingBtn" onclick="startTracking()">Start Tracking</button>
-                        <button id="stopTrackingBtn" style="display:none;" onclick="stopTracking()">Stop Tracking</button>
-                        <button id="speakBtn" style="display:none;" onclick="speakSummary()">Speak Summary</button>
+                        <button class="detail-btn" id="startTrackingBtn" onclick="startTracking()">Start Tracking</button>
+                        <button class="detail-btn" id="stopTrackingBtn" style="display:none;" onclick="stopTracking()">Stop Tracking</button>
+                        <button class="detail-btn" id="speakBtn" style="display:none;" onclick="speakSummary()">Speak Summary</button>
                     </div>
+                </div>
                     <p id="location">Latitude: <span id="latitude"></span>, Longitude: <span id="longitude"></span></p>
                     <p id="city">City: <span id="city_name"></span></p>
                     <p id="wiki_summary">Wikipedia Summary: <span id="wiki_content"></span></p>
@@ -40,7 +56,13 @@
         </div>
     </div>
 
+    <!-- Historical Places Container -->
+    <div class="historical-places-container">
+        <h2>Nearby Historical Places</h2>
+        <ul id="historical_places" class="historical-places"></ul>
+    </div>
+
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    </body>
+</body>
 </html>
