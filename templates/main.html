@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WikiGps</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+</head>
+<body>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="details-container">
+            <div class="details">
+                <div class="container">
+                    <h1>WikiGps</h1>
+                    <p>Click the button below to start tracking your location:</p>
+                    <div class="button-container">
+                        <button id="startTrackingBtn" onclick="startTracking()">Start Tracking</button>
+                        <button id="stopTrackingBtn" style="display:none;" onclick="stopTracking()">Stop Tracking</button>
+                        <button id="speakBtn" style="display:none;" onclick="speakSummary()">Speak Summary</button>
+                    </div>
+                    <p id="location">Latitude: <span id="latitude"></span>, Longitude: <span id="longitude"></span></p>
+                    <p id="city">City: <span id="city_name"></span></p>
+                    <p id="wiki_summary">Wikipedia Summary: <span id="wiki_content"></span></p>
+                    <p id="error_message" class="error"></p>
+                    <div class="language-select">
+                        <label for="language">Select Language:</label>
+                        <select id="language" onchange="translateSummary()">
+                            <option value="english">English</option>
+                            <option value="hebrew">Hebrew</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    </body>
+</html>
