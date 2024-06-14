@@ -22,6 +22,6 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     .catch(error => {
         // Handle error (e.g., display error message to user)
         console.error('Error logging in:', error);
-        alert('Login failed. Please check your credentials and try again.');
+        alert('Login failed. You may not registered yet.');
     });
 });

@@ -174,10 +174,10 @@ function fetchHistoricalPlaces(latitude, longitude) {
         })
         .catch(error => {
             console.error('Error fetching historical places:', error);
-            var errorElement = document.createElement('div');
-            errorElement.classList.add('historical-place');
-            errorElement.innerHTML = 'Error fetching historical places.';
-            historicalPlacesList.appendChild(errorElement);
+            // var errorElement = document.createElement('div');
+            // errorElement.classList.add('historical-place');
+            // errorElement.innerHTML = 'Error fetching historical places.';
+            // historicalPlacesList.appendChild(errorElement);
         });
 }
 
