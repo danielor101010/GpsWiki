@@ -107,13 +107,10 @@ def get_city_from_coordinates(latitude, longitude):
 
         if 'address' in data:
             if 'city' in data['address']:
-                print(data['address']['city'])
                 return data['address']['city']
             elif 'town' in data['address']:
-                print(data['address']['town'])
                 return data['address']['town']
             elif 'village' in data['address']:
-                print(data['address']['village'])
                 return data['address']['village']
         return 'Unknown City'  # Fallback if no city, town, or village found
     
@@ -188,4 +185,4 @@ def translate_text(text, language):
         return text
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

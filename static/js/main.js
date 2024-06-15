@@ -6,7 +6,7 @@ var historicalPlacesList = document.getElementById('historical_places_list');
 var map;
 var marker;
 
-var geoNamesUsername = 'your_geonames_username'; // Replace with your GeoNames username
+var geoNamesUsername = 'dandan11'; 
 
 function initMap() {
     map = L.map('map').setView([0, 0], 12); // Default center and zoom level
